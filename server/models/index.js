@@ -15,12 +15,13 @@ module.exports = {
         }
       });
     }, // a function which produces all the messages
-    post: function (username, room_name, message_text) {
+    post: function (username, room_name, message_text, callback) {
       console.log(username, room_name, message_text);
-      var queryString = 'INSERT INTO messages (username, roomname, message_text) VALUES ("'+username+'", "'+room_name+'", "'+message_text+'"'
+      var queryString = 'INSERT INTO messages (username, roomname, message_text) VALUES ("'+username+'", "'+room_name+'", "'+message_text+'")'
       db.connection.query(queryString, function() {
         console.log("POSTED!")
       });
+      callback();
     } // a function which can be used to insert a message into the database
   },
 
