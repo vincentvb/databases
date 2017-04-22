@@ -15,7 +15,9 @@ module.exports = {
       models.messages.get(res);
     }, // a function which handles a get request for all messages
     post: function (req, res, callback) {
-    	models.messages.post(req.body.username, req.body.roomname, req.body.message, callback);
+      console.log('IN CONTROLLER MESSAGE POST:', req.body);
+    	// models.messages.post(req.body.username, req.body.roomname, req.body.message, callback);
+      models.messages.post(req.body.username, req.body.roomname, req.body.text, callback);
     }, // a function which handles posting a message to the database
     options: function(req, res) {
       res.writeHead(200, headers);

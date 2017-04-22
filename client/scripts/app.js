@@ -34,7 +34,7 @@ var app = {
   lastMesgID: 0,
   init: function(){
     app.fetch();    
-
+    app.rooms = {};
     // setInterval(function (){app.fetch()},3000);
   },
   send: function(message){
@@ -66,24 +66,23 @@ var app = {
       contentType: 'application/json',
 
       success: function (data) {       
-        console.log(data);
-        console.log('data', data);
-        var results = data.results;
-        
-        var mostRecentMesgID = results[results.length-1].objectID;
-        if(mostRecentMesgID !== app.lastMesgID){
-          app.renderRoomList(results); 
-          that.lastMesgID = mostRecentMesgID; 
-        }
+        console.log('THE DATA', data);
+        // var mostRecentMesgID = results[results.length-1].objectID;
+        // if(mostRecentMesgID !== app.lastMesgID){
+        //   that.lastMesgID = mostRecentMesgID; 
+        // }
+        app.renderRoomList(data); 
 
         if(roomName){
-          results = _.filter(results,function(obj){return obj.roomname === roomName});
+          data = _.filter(data, function(obj){
+            return obj.roomname === roomName
+          });
         }
 
         that.clearMessages();
-        for(var i of results){
-          that.renderMessage(i);
-        }
+        data.forEach(function(message) {
+          that.renderMessage(message)
+        });
 
         console.log('chatterbox: Message received');
       },
@@ -101,8 +100,8 @@ var app = {
     var $chat = $('<div>').addClass('chat').appendTo($chatContainer)
     var $userName = $('<div>').appendTo($chat).text(message.username).addClass('username').attr('data-username',message.username);
     
-    $('<div>').appendTo($chat).text(message.text).addClass('text');
-    $('<div>').appendTo($chat).text(message.roomname);
+    $('<div>').appendTo($chat).text(message.message_text).addClass('text');
+    // $('<div>').appendTo($chat).text(message.roomname);
     $('<div>').appendTo($chat).text(message.createdAt);
   },
   renderRoom: function (roomName){
@@ -130,10 +129,14 @@ var app = {
     selector.toggleClass('friend');
   },
   renderRoomList: function (messages){
-    app.rooms = {};
+    console.log(messages)
+    // app.rooms = {};
+    console.log(app.rooms)
     messages.forEach(function (message){
       var roomname = message.roomname;
+      console.log(roomname, !app.rooms[roomname])
       if (roomname && !app.rooms[roomname]){
+        console.log("IN HERE")
         app.renderRoom(roomname);
         app.rooms[roomname] = true;
       }
