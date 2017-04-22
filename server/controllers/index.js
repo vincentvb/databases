@@ -1,5 +1,13 @@
 var models = require('../models');
 
+var defaultCorsHeaders = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10 // Seconds.
+};
+var headers = defaultCorsHeaders;
+headers['Content-Type'] = 'text/plain';
 
 module.exports = {
   messages: {
@@ -8,7 +16,11 @@ module.exports = {
     }, // a function which handles a get request for all messages
     post: function (req, res, callback) {
     	models.messages.post(req.body.username, req.body.roomname, req.body.message, callback);
-    } // a function which handles posting a message to the database
+    }, // a function which handles posting a message to the database
+    options: function(req, res) {
+      res.writeHead(200, headers);
+      res.end("You have access!")
+    }
   },
 
   users: {

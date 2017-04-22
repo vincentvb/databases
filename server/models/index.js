@@ -3,6 +3,15 @@ var mysql = require('mysql');
 
 db.connection.connect();
 
+var defaultCorsHeaders = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10 // Seconds.
+};
+var headers = defaultCorsHeaders;
+headers['Content-Type'] = 'text/plain';
+
 module.exports = {
   messages: {
     get: function (res) {
@@ -11,6 +20,7 @@ module.exports = {
         obj.message_text = results[0].message_text;
         obj.roomname= results[0].roomname;
         obj.username= results[0].username;
+        res.writeHead(200, headers);
         res.end(JSON.stringify([obj]))
       });
 
