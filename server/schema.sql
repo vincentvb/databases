@@ -1,3 +1,4 @@
+CREATE DATABASE chat;
 USE chat;
 
 -- ---
@@ -42,4 +43,3 @@ CREATE TABLE `users` (
 );
 
 
-INSERT INTO messages (username, roomname, message_text) VALUES ("Valjean", "Hello", "In mercy's name, three days is all I need.")
